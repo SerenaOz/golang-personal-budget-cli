@@ -56,8 +56,8 @@ func (b *Budget) AddItem(description string, price float32) error {
 	if b.CurrentCost() + price > b.Max {
 		return errDoesNotFitBudget
 	}
-	newItem = Item{Description: description, Price:price}
-	append(b.Items, newItem)
+	newItem := Item{Description: description, Price: price}
+	b.Items = append(b.Items, newItem)
 	return nil
 }
 
@@ -77,17 +77,17 @@ func CreateBudget(month time.Month, max float32) (*Budget, error) {
 	if len(report) > 11 {
 		return nil, errReportIsFull
 	}
-	if _, hasEntry = report[month]; hasEntry == true {
+	if _, hasEntry := report[month]; hasEntry == true {
 		return nil, errDuplicateEntry
 	}
-	&newBudget = Budget{Max:max}
+	*newBudget = Budget{Max:max}
 	report[month] = newBudget
 	return newBudget, nil
 }
 
 // GetBudget returns budget for given month
 func GetBudget(month time.Month) *Budget {
-	if budget, ok = report[month]; ok == true {
+	if budget, ok := report[month]; ok == true {
 		return budget
 	}
 	return nil
